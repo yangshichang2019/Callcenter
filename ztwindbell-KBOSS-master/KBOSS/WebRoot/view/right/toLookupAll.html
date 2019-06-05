@@ -1,0 +1,164 @@
+<div class="pageHeader">
+		<div class="searchBar">
+			<ul class="searchContent" style="height:54px">
+				<li style="width:410px;height:54px">
+					<textarea style="width:390px;height:45px" id="users_str"></textarea>
+				</li>
+				<li style="width:80px;height:25px"><div class="buttonActive"><div class="buttonContent"><button type="button">批量查询</button></div></div></li>
+			</ul>
+		</div>
+</div>
+<div class="pageContent" style="padding-top:5px">
+	<form id="toLookupAll">
+		<div layoutH="115" style="float:left; display:block; overflow:auto; width:230px; border:solid 1px #CCC; line-height:21px;background:#fff;margin-left:5px;">
+			<ul id="LookUpAllUserBox" class="ztree"></ul>
+		</div>
+		<div style="margin-left:15px;float:left;padding-bottom:5px">
+			<div id="subLookUpAllUserBox" class="unitBox">
+				<select multiple size="20" id="upUsers" style="height: 170px; width: 230px;"></select>
+			</div>
+			<div style="height:25px;text-align:center;padding-top:5px;padding-bottom:5px">
+				<input type="button" value="增加" id="downMove"/>
+				<input type="button" value="移除" id="upMove"/>
+			</div>
+			<div id="haveChoseUser">
+				<select multiple size="20" id="downUsers" style="height: 170px; width: 230px;"></select>
+			</div>
+			<input type="hidden" id="user_nameStr"/>
+			<input type="hidden" id="user_idStr"/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="userBringBback();">确定</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	//批量右移
+	$("#toLookupAll").find("#downMove").click(function(){
+
+		$("#toLookupAll").find("#upUsers option:selected").each(function(){
+			var stext = $(this).text();
+			var svalue = $(this).val();
+			var is_have = false;
+			$("#downUsers option").each(function(){
+				if(stext==$(this).text()) {
+					is_have = true;
+				}
+			});
+			if(!is_have) {
+				$("#toLookupAll").find("#downUsers").append("<option value=\""+svalue+"\">"+stext+"</option>");
+			}
+		});
+		
+		//$("#toLookupAll").find("#downUsers").append($("#toLookupAll").find("#upUsers option:selected"));
+		makeUserStr();
+	});
+	//批量移除
+	$("#toLookupAll").find("#upMove").click(function(){
+		$("#toLookupAll").find("#downUsers option:selected").remove();
+		makeUserStr();
+	});
+	
+	function is_have(name,id){
+	}
+	var toLookUpAllUserSetting = {
+		view: {
+			selectedMulti: false
+		},
+		async: {
+			enable: true,
+			url:"right/toChildrenLookUpAllUser",
+			autoParam:["id=num"],
+			otherParam:{"navTabId":"${navTabId}"}
+		},
+		callback:{
+			onClick:toLookUpAllUserOnClick
+		}
+	};
+function toLookUpAllUserOnClick(event, treeId, treeNode) {
+	loadDiv(treeNode.box,treeNode.href);
+};
+
+$.fn.zTree.init($("#toLookupAll").find("#LookUpAllUserBox"), toLookUpAllUserSetting);
+//根据已选择内容，再次加载
+loadHavaChoose();
+
+function loadHavaChoose(){
+	var init_names = $("#${groupName}_names").val();
+	var init_ids = $("#${groupName}_ids").val();
+	if(init_names!="") {
+		$("#toLookupAll").find("#user_nameStr").val(init_names);
+		$("#toLookupAll").find("#user_idStr").val(init_ids);
+		var arry = init_names.split(",");
+		var dept_s = 0;
+		var group_s = 0;
+		var user_s = 0;
+		var ids_json = $.parseJSON(init_ids); 
+		for(var i=0;i<arry.length;i++){
+			var value = "";
+			if(arry[i].indexOf("#")==0) {
+				value = ids_json.dept[dept_s];
+				dept_s = dept_s + 1;
+			}else if(arry[i].indexOf("*")==0) {
+				value = ids_json.group[group_s];
+				group_s = group_s + 1;
+			}else{
+				value = ids_json.user[user_s];
+				user_s = user_s + 1;
+			}
+			$("#toLookupAll").find("#downUsers").append("<option value=\""+value+"\">"+arry[i]+"</option>");
+		}
+	}
+}
+function makeUserStr() {
+	var names = "";
+	var dept = "";
+	var user = "";
+	var group = "";
+	var text = "";
+	$("#downUsers option").each(function(){
+		text = $(this).text();
+		names = names + text + ",";
+		if(text.indexOf('#')==0) {
+			dept = dept + $(this).val() + ",";
+		} else if (text.indexOf('*')==0) {
+			group = group + $(this).val() + ",";
+		} else {
+			user = user + "\""+$(this).val() + "\",";
+		}
+	});
+	if(names !="") {
+		names = names.substring(0,names.length-1);
+	}
+	var userStr = "";
+	userStr = "{";
+	if(user!="") {
+		user = user.substring(0,user.length-1);
+		userStr = userStr + "\"user\":["+user+"],";
+	} 
+	if(dept!="") {
+		dept = dept.substring(0,dept.length-1);
+		userStr = userStr + "\"dept\":["+dept+"],";
+	} 
+	if(group!="") {
+		group = group.substring(0,group.length-1);
+		userStr = userStr + "\"group\":["+group+"],";
+	} 
+	if(userStr!="{") {
+		userStr = userStr.substring(0,userStr.length-1);
+		userStr = userStr + "}";
+	}else {
+		userStr = "";
+	}
+	$("#toLookupAll").find("#user_nameStr").val(names);
+	$("#toLookupAll").find("#user_idStr").val(userStr);
+}
+function userBringBback(){
+	$("#${groupName}_names").val($("#toLookupAll").find("#user_nameStr").val());
+	$("#${groupName}_ids").val($("#toLookupAll").find("#user_idStr").val());
+	$.pdialog.closeCurrent();
+}
+</script>

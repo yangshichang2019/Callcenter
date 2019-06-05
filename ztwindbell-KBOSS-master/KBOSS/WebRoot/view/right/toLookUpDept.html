@@ -1,0 +1,30 @@
+<div class="pageContent">
+	<div class="pageFormContent ztree" layoutH="58">
+		<ul id="LookUpDeptBox" class="ztree"></ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+		var toLookUpDeptSetting = {
+			view: {
+				selectedMulti: false
+			},
+			async: {
+				enable: true,
+				url:"right/toChildrenLookUpDept",
+				autoParam:["id"],
+			},
+			callback:{
+				onClick:toLookUpDeptOnClick
+			}
+		};
+		function toLookUpDeptOnClick(event, treeId, treeNode) {
+				$.bringBack({dept_id:''+treeNode.nid+'', dept_name:''+treeNode.name+''})
+		};
+
+		$.fn.zTree.init($("#LookUpDeptBox"), toLookUpDeptSetting);
+</script>

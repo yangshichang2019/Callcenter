@@ -1,0 +1,58 @@
+<form id="pagerForm" method="post" action="right/userLogin?navTabId=${navTabId!}">
+	<input type="hidden" name="pageSize" value="${pd.pageSize}" />
+	<input type="hidden" name="pageNumber" value="${pd.pageNumber}" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="right/userLogin?navTabId=${navTabId!}" method="post">
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>用户名：</td>
+					<td><input type="text" name="username" value="${username!}"/></td>
+					<td>IP：</td>
+					<td><input type="text" name="ip" value="${ip!}"/></td>
+					<td>起始时间：</td>
+					<td><input type="text" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" class="date" name="start_time" value="${start_time!}"></td>
+					<td>截止时间：</td>
+					<td><input type="text" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" class="date" name="end_time" value="${end_time!}"></td>
+				</tr>
+			</table>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="list" width="100%" layoutH="88">
+		<thead>
+			<tr>
+				<th width="50">序号</th>
+				<th>应用</th>
+				<th>用户名</th>
+				<th>真实姓名</th>
+				<th>登陆时间</th>
+				<th>注销时间</th>
+				<th>IP地址</th>
+				<th>客户端</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list pd.list as item>
+			<tr>
+				<td>${item_index+1+(pd.pageNumber-1)*pd.pageSize}</td>
+				<td>${item.APP!}</td>
+				<td class="bold">${item.CREATE_USER!}</td>
+				<td class="bold"><@toUser key="${item.CREATE_USER!}"/></td>
+				<td>${item.CREATE_TIME!}</td>
+				<td>${item.DESTORY_TIME!}</td>
+				<td>${item.IP!}</td>
+				<td>${item.CLIENT!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../inc/page.html">
+</div>

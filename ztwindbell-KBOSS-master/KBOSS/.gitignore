@@ -1,0 +1,8 @@
+*.class
+.externalToolBuilders
+/.project
+/.classpath
+/.mymetadata
+/.settings
+/WebRoot/META-INF/MANIFEST.MF
+classes

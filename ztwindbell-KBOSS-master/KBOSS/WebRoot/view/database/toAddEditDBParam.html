@@ -1,0 +1,40 @@
+<div class="pageContent">
+	<form method="post" action="database/toSaveDBParam?navTabId=${navTabId}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="ID" value="${dbParam.ID!}"/>
+		<div class="pageFormContent" layoutH="58">
+			<p>
+				<label>所属模块：</label>
+				<select name="MODEL" class="combox required">
+						<option value="">请选择</option>
+						<@toDataBase type="select" code="DATABASE_PARAM_MODEL" value="${dbParam.MODEL!}"/>
+				</select>
+			</p>
+			<p>
+				<label>名称：</label>
+				<input type="text" name="NAME" value="${dbParam.NAME!}" class="required" maxlength="40"/>
+			</p>
+			<p>
+				<label>编码：</label>
+				<input type="text" name="CODE" value="${dbParam.CODE!}" class="required" maxlength="40"/>
+			</p>	
+			<p>
+				<label>值：</label>
+				<input type="text" name="VALUE" value="${dbParam.VALUE!}" class="required" maxlength="100"/>
+			</p>	
+			<p>
+				<label>描述：</label>
+				<input type="text" name="DESC" value="${dbParam.DESC!}" maxlength="100"/>
+			</p>		
+			<p>
+				<label>排序：</label>
+				<input type="text" name="SORT_ID" value="${dbParam.SORT_ID!}" class="required digits" style="width: 50px" maxlength="10"/>
+			</p>		
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

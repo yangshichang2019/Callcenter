@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>KBOSS</title>
+<link href="themes/default/style.css" rel="stylesheet" type="text/css" media="screen"/>
+<link href="themes/css/core.css" rel="stylesheet" type="text/css" media="screen"/>
+<link href="themes/css/print.css" rel="stylesheet" type="text/css" media="print"/>
+<link href="themes/zTree/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+<!--[if IE]>
+<link href="themes/css/ieHack.css" rel="stylesheet" type="text/css" media="screen"/>
+<![endif]-->
+<style type="text/css">
+	#header{height:85px}
+	#leftside, #container, #splitBar, #splitBarProxy{top:90px}
+	.pageFormContent dt {width: 80px;text-align: right;font-weight: bold;}
+	.pageFormContent label {width: 90px;text-align: right;font-weight: bold;}
+	.ztree .button {float: none;}
+	table.list th {text-align: center;font-weight: normal;}
+	table.list td {text-align: center;}
+	table.list td.bold {font-weight: bold;}
+	table.list td.desc {color: #666666}
+	table.list td.align_left {text-align: left;}
+	table.list td font {line-height: 21px}
+	table.list a {font-size:12px;}
+	
+	span.error {left: 255px;width: 140px;}
+	
+	.form_span {line-height: 21px}
+	.form_span font {line-height: 21px}
+</style>
+<!--[if lte IE 9]>
+<script src="js/speedup.js" type="text/javascript"></script>
+<![endif]-->
+<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="js/jquery.cookie.js" type="text/javascript"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="js/jquery.bgiframe.js" type="text/javascript"></script>
+<script src="js/dwz.min.js" type="text/javascript"></script>
+<script src="js/dwz.regional.zh.js" type="text/javascript"></script>
+<script src="js/jquery.ztree.all-3.5.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function(){
+		DWZ.init("dwz.frag.xml", {
+			loginUrl:"login",	// 跳到登录页面
+			statusCode:{ok:200, error:300, timeout:301}, //【可选】
+			keys: {statusCode:"statusCode", message:"message"}, //【可选】
+			pageInfo:{pageNum:"pageNumber", numPerPage:"pageSize", orderField:"orderField", orderDirection:"orderDirection"}, //【可选】
+			debug:false,	
+			callback:function(){
+				initEnv();
+			}
+		});
+	});
+	var timess = 1;
+	function inited(){
+		if(timess==1){
+			<#if right??>
+				navTab.openTab("${right.NUM!}", "${right.HREF}?navTabId=${right.NUM}", {title:"${right.NAME}",external:false, fresh:${right.FRESH}, data:{} });
+			</#if>
+			<#if url??>
+				navTab.openTab("newNavTab", "${url!}", {title:"新窗口",external:false, fresh:false, data:{} });
+			</#if>
+			timess = timess +1;
+		}
+	}
+</script>
+<style>
+#splitBarProxy{display:none}
+#splitBar {display:none}
+</style>
+</head>
+
+<body scroll="no">
+	<div id="layout">
+
+		<div id="container" style="top:0;left:0">
+			<div id="navTab" class="tabsPage">
+				<div class="tabsPageHeader">
+					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
+						<ul class="navTab-tab">
+							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">我的主页</span></span></a></li>
+						</ul>
+					</div>
+					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
+					<div class="tabsRight">right</div><!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
+					<div class="tabsMore">more</div>
+				</div>
+				<ul class="tabsMoreList">
+					<li><a href="javascript:;">我的主页</a></li>
+				</ul>
+				<div class="navTab-panel tabsPageContent layoutBox">
+					<div class="page unitBox">
+						<div class="accountInfo">
+							<div class="alertInfo">
+								<h2><a></a></h2>
+								<a target="_blank"></a>
+							</div>
+							<div class="right">
+								<p><a style="line-height:19px"></a></p>
+								<p><a style="line-height:19px"></a></p>
+							</div>
+							<p><span>KBOSS</span></p>
+							<p></p>
+						</div>
+						<div class="pageContent sortDrag" selector="h1" layoutH="42">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer">Copyright &copy; 2015 KBOSS</div>
+</body>
+</html>

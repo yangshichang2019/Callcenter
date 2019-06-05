@@ -1,0 +1,59 @@
+<form id="pagerForm" method="post" action="database/toDataBaseManage?ID=${ID!}&navTabId=${navTabId!}">
+	<input type="hidden" name="pageSize" value="${pd.pageSize}" />
+	<input type="hidden" name="pageNumber" value="${pd.pageNumber}" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="database/toDataBaseManage?ID=${ID!}&navTabId=${navTabId!}" method="post">
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>名称：</td>
+					<td><input name="NAME" class="textInput" value="${NAME!}"/></td>
+					<td>编码：</td>
+					<td><input name="CODE" class="textInput" value="${CODE!}"/></td>
+				</tr>
+			</table>
+			<div class="subBar">
+				<ul>
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="database/toAddEditDataBase?navTabId=${navTabId!}<#if ID gt 0>&PARENT_ID=${ID!}</#if>" target="dialog" width="430" height="250" title="新建编码"><span>新建</span></a></li>
+			<li><a class="edit" href="database/toClearDataBase" target="ajaxToDo"><span>清空缓存</span></a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="116">
+		<thead>
+			<tr>
+				<th width="50">序号</th>
+				<th>名称</th>
+				<th>编码</th>
+				<th>颜色</th>
+				<th width="50">排序</th>
+				<th width="80">是否可用</th>
+				<th width="80">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list pd.list as item>
+			<tr>
+				<td>${item_index+1+(pd.pageNumber-1)*pd.pageSize}</td>
+				<td class="bold align_left">${item.NAME!}</td>
+				<td class="bold align_left">${item.CODE!}</td>
+				<td><@toDataBase type="text" code="DATABASE_COLOR" value="${item.COLOR!}"/></td>
+				<td>${item.SORT_ID!}</td>
+				<td><@toDataBase type="text" code="T/F" value="${item.ENABLE_FLAG!}"/></td>
+				<td><a href="database/toAddEditDataBase?ID=${item.ID!}&navTabId=${navTabId}" target="dialog" width="430" height="300">修改</a>&nbsp;&nbsp;&nbsp;
+				<#if item.PARENT_ID=0><a target="navTab" rel="toDataBaseManage_${ID}" href="database/toDataBaseManage?ID=${item.ID!}&navTabId=toDataBaseManage_${ID}" target="target" title="${item.NAME!}编码">编码</a></#if></td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../inc/page.html">
+</div>

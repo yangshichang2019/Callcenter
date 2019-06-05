@@ -1,0 +1,37 @@
+<div class="pageContent">
+	<form method="post" action="database/toSaveDataBase?navTabId=${navTabId}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="ID" value="${database.ID!}"/>
+		<input type="hidden" name="PARENT_ID" value="${database.PARENT_ID!}"/>
+		<div class="pageFormContent" layoutH="58">
+			<p>
+				<label>名称：</label>
+				<input type="text" name="NAME" value="${database.NAME!}" class="required" maxlength="40"/>
+			</p>
+			<p>
+				<label>编码：</label>
+				<input type="text" name="CODE" value="${database.CODE!}" class="required" maxlength="40"/>
+			</p>		
+			<p>
+				<label>颜色：</label>
+				<select name="COLOR" class="combox required">
+						<option value="">请选择</option>
+						<@toDataBase type="select" code="DATABASE_COLOR" value="${database.COLOR!}"/>
+				</select>
+			</p>
+			<p>
+				<label>排序：</label>
+				<input type="text" name="SORT_ID" value="${database.SORT_ID!}" class="required digits" style="width: 50px" maxlength="10"/>
+			</p>		
+			<p>
+				<label>是否可用：</label>
+				<@toDataBase type="radio" code="T/F" name="ENABLE_FLAG" value="${database.ENABLE_FLAG!'T'}"/>
+			</p>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

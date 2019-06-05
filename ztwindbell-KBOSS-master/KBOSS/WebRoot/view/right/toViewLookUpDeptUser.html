@@ -1,0 +1,9 @@
+<select multiple size="20" id="upUsers" style="height: 170px; width: 230px;">
+	<option value="${dept.ID}">#${dept.NAME}[${dept.ID!}]</option>
+	<#list deptlist as item>
+		<option value="${item.ID}">#${item.NAME}[${item.ID}]</option>
+	</#list>
+	<#list userList as item>
+		<option value="${item.USERNAME}">${item.REALNAME}[${item.USERNAME}]</option>
+	</#list>
+</select>

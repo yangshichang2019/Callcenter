@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>KBOSS管理后台</title>
+<link href="themes/css/login.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="login">
+		<div id="login_header">
+			<h1 class="login_logo">
+				<a href="login"><img src="themes/default/images/login_logo.gif" /></a>
+			</h1>
+			<div class="login_headerContent">
+				<div class="navList">
+					<ul>
+					</ul>
+				</div>
+				<h2 class="login_title"><img src="themes/default/images/login_title.png" /></h2>
+			</div>
+		</div>
+		<div id="login_content">
+			<div class="loginForm">
+				<form id="loginForm" onsubmit="return check();">
+					<p>
+						<label>用户名：</label>
+						<input type="text" name="username" size="20" class="login_input" />
+					</p>
+					<p>
+						<label>密码：</label>
+						<input type="password" name="password" size="20" class="login_input" />
+					</p>
+					<div class="login_bar">
+						<input class="sub" type="submit" value=" " />
+					</div>
+				</form>
+			</div>
+			<div class="login_banner"><img src="themes/default/images/login_banner.jpg" /></div>
+			<div class="login_main">
+				<ul class="helpList">
+				</ul>
+				<div class="login_inner">
+				</div>
+			</div>
+		</div>
+		<div id="login_footer">
+			Copyright &copy; 2016 康佳集团 Inc. All Rights Reserved.
+		</div>
+	</div>
+	<script>
+	function check(){
+		var username = $("input[name='username']").val();
+		var password = $("input[name='password']").val();
+		if(username==''||password=='') {
+			alert("用户名或密码不能为空！");
+			return false;
+		}
+		$.ajax({
+			async:false,
+			type:"post",
+			url:"check",
+			cache: false,
+			data:$("#loginForm").serialize(),
+			dataType:"json",
+			success: function(data){
+				if(data.result=="success") {
+					location.href="index";
+				}else {
+					alert(data.message);
+				}
+			},error:function(data){
+				alert("页面加载失败");
+			}
+		});	
+		return false;
+	}
+	
+	$(function(){
+		$.ajax({url:"../OTS/logout"});
+	});
+	</script>
+</body>
+</html>

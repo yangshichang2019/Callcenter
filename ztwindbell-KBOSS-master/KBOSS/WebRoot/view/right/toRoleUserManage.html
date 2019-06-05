@@ -1,0 +1,75 @@
+<div class="pageContent">
+	<form method="post" id="RoleUserForm_${role.ID!}" action="right/toSaveRoleUser" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="id" value="${role.ID!}"/>		
+		<input type="hidden" id="users" name="users" value="${users!}"/>	
+		<h2 class="contentTitle">${role.NAME} 的用户</h2>
+		<div class="pageFormContent" layoutH="98">
+			<table style="margin-left: 20px">
+				<tr>
+					<td style="line-height: 30px">待选用户：</td>
+					<td></td>
+					<td style="line-height: 30px">已选用户：</td>
+				</tr>
+				<tr>
+					<td>
+			      <select style="width:200px;height:500px" multiple id="leftUsers">
+							<#list leftList as item>
+								<option value="${item.USERNAME!}">${item.USERNAME!}(${item.REALNAME!})</option>
+							</#list>
+			      </select>
+      		</td>
+					<td style="padding: 0 10px">
+						<input type="button" value=">>" id="rightMove"/><br/><br/>
+						<input type="button" value="<<" id="leftMove"/><br/>
+					</td>
+					<td>
+			      <select style="width:200px;height:500px" multiple id="rightUsers">
+							<#list rightList as item>
+								<option value="${item.USERNAME!}">${item.USERNAME!}(${item.REALNAME!})</option>
+							</#list>
+			      </select>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div> 
+
+<script type="text/javascript">
+	  //双击右移
+	  $("#RoleUserForm_${role.ID!}").find("#leftUsers").dblclick(function(){
+		  $("#RoleUserForm_${role.ID!}").find("#rightUsers").append($("#RoleUserForm_${role.ID!}").find("#leftUsers option:selected"));
+		  selectAllValue_${role.ID!}();
+	  });
+	  //双击左移
+	  $("#RoleUserForm_${role.ID!}").find("#rightUsers").dblclick(function(){
+		  $("#RoleUserForm_${role.ID!}").find("#leftUsers").append($("#RoleUserForm_${role.ID!}").find("#rightUsers option:selected"));
+		  selectAllValue_${role.ID!}();
+	  });
+    //批量右移
+    $("#RoleUserForm_${role.ID!}").find("#rightMove").click(function(){
+  	  $("#RoleUserForm_${role.ID!}").find("#rightUsers").append($("#RoleUserForm_${role.ID!}").find("#leftUsers option:selected"));
+  		selectAllValue_${role.ID!}();
+    });
+    //批量左移
+    $("#RoleUserForm_${role.ID!}").find("#leftMove").click(function(){
+  	  $("#RoleUserForm_${role.ID!}").find("#leftUsers").append($("#RoleUserForm_${role.ID!}").find("#rightUsers option:selected"));
+  		selectAllValue_${role.ID!}();
+    });
+ 		function selectAllValue_${role.ID!}(){
+ 			var users = "";
+ 			$("#RoleUserForm_${role.ID!}").find("#rightUsers").find("option").each(function() {
+ 				users = users+$(this).val()+",";
+ 			});
+ 			if(users!="") {
+ 				users = users.substring(0,users.length-1);
+ 			}
+ 			$("#RoleUserForm_${role.ID!}").find("#users").val(users);
+ 		}
+  </script>

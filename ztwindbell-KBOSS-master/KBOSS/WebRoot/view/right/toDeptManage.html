@@ -1,0 +1,76 @@
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="javascript:" onclick="loadDiv('subDeptListBox','right/toAddEditDept?navTabId=${navTabId}')"><span>添加根部门</span></a></li>
+			<li><a class="edit" target="ajaxTodo" href="right/toLoadDeptCache"><span>刷新缓存</span></a></li>
+		</ul>
+	</div>
+	<div layoutH="20" style="float:left; display:block; overflow:auto; width:220px; border:solid 1px #CCC; line-height:21px; background:#fff; border-top: none">
+		<ul id="DeptListBox" class="ztree"></ul>
+	</div>
+	<div id="subDeptListBox" class="unitBox" style="margin-left:221px;"></div>
+</div>
+<script type="text/javascript">
+		var toDeptListSetting = {
+			view: {
+				selectedMulti: false
+			},
+			async: {
+				enable: true,
+				url:"right/toChildrenDept",
+				autoParam:["id"],
+				otherParam:{"navTabId":"${navTabId}"}
+			},
+			callback:{
+				onClick:toDeptListOnClick,
+				onRename:zTreeOnRename,
+				beforeRemove:zTreeBeforeRemove,
+				onRemove:zTreeOnRemove
+			},
+			edit: {
+				enable: true
+			}
+		};
+		function toDeptListOnClick(event, treeId, treeNode) {
+			loadDiv("subDeptListBox",treeNode.href);
+		}
+		//删除前执行
+		function zTreeBeforeRemove(treeId, treeNode){
+			if(treeNode.isParent) {
+				alertMsg.error("不允许删除父权限！");
+				return false;
+			}
+			return confirm("确定要删除"+treeNode.name+"吗？");
+		}
+		//更改名称
+		function zTreeOnRename(event, treeId, treeNode, isCancel) {
+			ajaxTodo("right/toZtreeRenameDept?num="+treeNode.id+"&name="+treeNode.name,function(){
+				alertMsg.correct("修改成功！");
+				$("#subDeptListBox").html("");
+			});
+		}
+		//删除
+		function zTreeOnRemove(event, treeId, treeNode){
+			ajaxTodo("right/toZtreeDeleteDept?num="+treeNode.id,function(json){
+				alertMsg.correct("删除成功！");
+				$("#subDeptListBox").html("");
+			});
+		}
+		$.fn.zTree.init($("#DeptListBox"), toDeptListSetting);
+		
+		function deptAjaxDone(json){
+			DWZ.ajaxDone(json);
+			if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
+				if(json.parentNum!=""){
+					var treeObj = $.fn.zTree.getZTreeObj("DeptListBox");
+					var node = treeObj.getNodesByParam("id",json.parentNum,null);
+					if(node.length>0){
+						treeObj.reAsyncChildNodes(node[0],"refresh");
+						$("#subDeptListBox").html("");
+						return;
+					}
+				}
+				navTab.reloadFlag(json.navTabId);
+			}
+		}
+</script>

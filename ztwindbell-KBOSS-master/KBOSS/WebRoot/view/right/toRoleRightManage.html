@@ -1,0 +1,45 @@
+<div class="pageContent">
+	<form method="post" id="RoleRightForm_${role.ID!}" action="right/toSaveRoleRight" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="id" value="${role.ID!}"/>
+		<input type="hidden" id="rights" name="rights" value="${rights!}"/>
+		<h2 class="contentTitle">${role.NAME} 的权限</h2>
+		<div class="pageFormContent" layoutH="98">
+			<div id="RoleRightTree_${role.ID!}" class="ztree"></div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+var setting = {
+		check: {
+			enable: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			onCheck: onCheck_${role.id!}
+		}
+	};
+var zNodes = [${zNodes!}];
+$.fn.zTree.init($("#RoleRightTree_${role.ID!}"), setting, zNodes);
+function onCheck_${role.id!}(){
+	var treeObj = $.fn.zTree.getZTreeObj("RoleRightTree_${role.ID!}");
+	var nodes = treeObj.getCheckedNodes(true);
+	var rights = "";
+	for(var i=0;i<nodes.length;i++) {
+		rights = rights + nodes[i].id;
+		if(i<nodes.length-1) {
+			rights = rights+",";
+		}
+	}
+	$("#RoleRightForm_${role.ID!}").find("#rights").val(rights);
+}
+</script>

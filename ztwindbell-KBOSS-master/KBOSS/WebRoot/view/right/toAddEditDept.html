@@ -1,0 +1,62 @@
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<#if dept.ID??>
+			<li><a class="add" href="javascript:" onclick="loadDiv('subDeptListBox','right/toAddEditDept?parent_id=${dept.ID!}&navTabId=${navTabId}')"><span>添加下级部门</span></a></li>
+			<li><a class="edit" href="right/toDeptUser?id=${dept.ID!}" rel="toDeptUser" target="navTab"><span>人员管理(${amount!'0'}人)</span></a></li>
+			</#if>	
+		</ul>
+	</div>
+	<form method="post" action="right/toSaveDept?navTabId=${navTabId}" class="pageForm required-validate" onsubmit="return validateCallback(this, deptAjaxDone)">
+		<input type="hidden" name="id" value="${dept.ID!}"/>
+		<input type="hidden" name="parent_id" value="${dept.PARENT_ID!}"/>
+		<div class="pageFormContent" layoutH="110">
+			<#if parentDept??>
+			<fieldset>
+				<legend>父级信息</legend>
+				<dl>
+					<dt>名称：</dt>
+					<dd>${parentDept.NAME!}</dd>
+				</dl>
+				<dl>
+					<dt>编码：</dt>
+					<dd>${parentDept.NUM!}</dd>
+				</dl>
+			</fieldset>
+			</#if>
+			<fieldset>
+				<legend>部门信息</legend>
+				<dl style="width: 800px">
+					<dt>编码：</dt>
+					<dd><input type="text" name="num" value="${dept.NUM!}" readonly="readonly"/></dd>
+				</dl>
+				<dl style="width: 800px">
+					<dt>名称：</dt>
+					<dd><input type="text" name="name" value="${dept.NAME!}" class="required"/></dd>
+				</dl>
+				<dl style="width: 800px">
+					<dt>类别：</dt>
+					<dd>
+						<select name="cate" class="combox required">
+							<@toDataBase type="select" code="RIGHT_DEPT_CATE" value="${dept.CATE!}"/>
+						</select>
+					</dd>
+				</dl>
+				<dl style="width: 800px;height: auto;">
+					<dt>描述：</dt>
+					<dd><textarea name="desc">${dept.DESC!}</textarea></dd>
+				</dl>
+				<dl style="width: 800px">
+					<dt>排序：</dt>
+					<dd><input type="text" name="sort_id" value="${dept.SORT_ID!'0'}" class="required" style="width: 50px"/></dd>
+				</dl>
+			</fieldset>
+		</div>
+
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

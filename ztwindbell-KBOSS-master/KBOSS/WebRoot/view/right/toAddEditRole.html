@@ -1,0 +1,28 @@
+<div class="pageContent">
+	<form method="post" action="right/toSaveRole?navTabId=${navTabId}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="id" value="${role.ID!}"/>
+		<div class="pageFormContent" layoutH="58">
+			<p>
+				<label>所属模块：</label>
+				<select name="model" class="combox required">
+						<option value="">请选择</option>
+						<@toDataBase type="select" code="RIGHT_ROLE_MODEL" value="${role.MODEL!}"/>
+				</select>
+			</p>
+			<p>
+				<label>名称：</label>
+				<input type="text" name="name" value="${role.NAME!}" class="required" maxlength="40"/>
+			</p>
+			<p style="height: auto;">
+				<label>描述：</label>
+				<textarea name="desc">${role.DESC!}</textarea>
+			</p>			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

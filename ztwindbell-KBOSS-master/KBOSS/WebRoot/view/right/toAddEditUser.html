@@ -1,0 +1,51 @@
+<div class="pageContent">
+	<form method="post" action="right/toSaveUser?navTabId=${navTabId}" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="id" value="${user.ID!}"/>
+		<div class="pageFormContent" layoutH="58">
+			<p>
+				<label>用户名：</label>
+				<#if user.ID??>
+					<span style="line-height: 21px">${user.USERNAME!}</span>
+				<#else>
+					<input type="text" name="username" value="${user.USERNAME!}" class="required alphanumeric" maxlength="40"/><span class="info">&nbsp;&nbsp;保存后无法修改</span>
+				</#if>
+			</p>
+			<p>
+				<label>密码：</label>
+				<#if user.ID??>
+					<input type="password" name="password" value="" maxlength="40" autocomplete="off"/><span class="info">&nbsp;&nbsp;不修改则留空</span>
+				<#else>
+					<input type="password" name="password" value="123456" maxlength="40" class="required"/><span class="info">&nbsp;&nbsp;默认密码：123456</span>
+				</#if>
+			</p>
+			<p>
+				<label>真实姓名：</label>
+				<input type="text" name="realname" value="${user.REALNAME!}" class="required" maxlength="40"/>
+			</p>
+			<p>
+				<label>邮箱：</label>
+				<input type="text" name="email" value="${user.EMAIL!}" class="email" maxlength="50"/>
+			</p>
+			<p>
+				<label>手机号：</label>
+				<input type="text" name="phone" value="${user.PHONE!}" maxlength="50"/>
+			</p>
+			<p>
+				<label>组织架构：</label>
+				<input type="hidden" name="user.dept_id" value="${user.DEPT_ID!}"/>
+				<input type="text" name="user.dept_name" autocomplete="off" readonly="readonly" value="<@toDept key="${user.DEPT_ID!}"/>">
+				<a lookupgroup="user" rel="right_toLookUpDept" href="right/toLookUpDept" width="400" height="500" class="btnLook" title="查找组织架构">查找带回</a>
+			</p>
+			<p>
+				<label>是否可用：</label>
+				<@toDataBase type="radio" code="T/F" name="enable_flag" value="${user.ENABLE_FLAG!'T'}"/>
+			</p>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

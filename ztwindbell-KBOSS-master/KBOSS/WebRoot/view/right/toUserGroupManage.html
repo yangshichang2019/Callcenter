@@ -1,0 +1,75 @@
+<div class="pageContent">
+	<form method="post" id="UserGroupForm_${user.ID!}" action="right/toSaveUserGroup" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="id" value="${user.ID!}"/>		
+		<input type="hidden" id="groups" name="groups" value="${groups!}"/>	
+		<h2 class="contentTitle">${user.USERNAME}(${user.REALNAME}) 的工作组</h2>
+		<div class="pageFormContent" layoutH="98">
+			<table style="margin-left: 20px">
+				<tr>
+					<td style="line-height: 30px">待选工作组：</td>
+					<td></td>
+					<td style="line-height: 30px">已选工作组：</td>
+				</tr>
+				<tr>
+					<td>
+			      <select style="width:250px;height:500px" multiple id="leftGroups">
+							<#list leftList as item>
+								<option value="${item.id!}">${item.NAME!}(${item.DESC!})</option>
+							</#list>
+			      </select>
+      		</td>
+					<td style="padding: 0 10px">
+						<input type="button" value=">>" id="rightMove"/><br/><br/>
+						<input type="button" value="<<" id="leftMove"/><br/>
+					</td>
+					<td>
+			      <select style="width:250px;height:500px" multiple id="rightGroups">
+							<#list rightList as item>
+								<option value="${item.id!}">${item.NAME!}(${item.DESC!})</option>
+							</#list>
+			      </select>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"> 取 消 </button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div> 
+
+<script type="text/javascript">
+	  //双击右移
+	  $("#UserGroupForm_${user.ID!}").find("#leftGroups").dblclick(function(){
+		  $("#UserGroupForm_${user.ID!}").find("#rightGroups").append($("#UserGroupForm_${user.ID!}").find("#leftGroups option:selected"));
+		  UserGroupForm_selectAllValue_${user.ID!}();
+	  });
+	  //双击左移
+	  $("#UserGroupForm_${user.ID!}").find("#rightGroups").dblclick(function(){
+		  $("#UserGroupForm_${user.ID!}").find("#leftGroups").append($("#UserGroupForm_${user.ID!}").find("#rightGroups option:selected"));
+		  UserGroupForm_selectAllValue_${user.ID!}();
+	  });
+    //批量右移
+    $("#UserGroupForm_${user.ID!}").find("#rightMove").click(function(){
+  	  $("#UserGroupForm_${user.ID!}").find("#rightGroups").append($("#UserGroupForm_${user.ID!}").find("#leftGroups option:selected"));
+  		UserGroupForm_selectAllValue_${user.ID!}();
+    });
+    //批量左移
+    $("#UserGroupForm_${user.ID!}").find("#leftMove").click(function(){
+  	  $("#UserGroupForm_${user.ID!}").find("#leftGroups").append($("#UserGroupForm_${user.ID!}").find("#rightGroups option:selected"));
+  		UserGroupForm_selectAllValue_${user.ID!}();
+    });
+ 		function UserGroupForm_selectAllValue_${user.ID!}(){
+ 			var groups = "";
+ 			$("#UserGroupForm_${user.ID!}").find("#rightGroups").find("option").each(function() {
+ 				groups = groups+$(this).val()+",";
+ 			});
+ 			if(groups!="") {
+ 				groups = groups.substring(0,groups.length-1);
+ 			}
+ 			$("#UserGroupForm_${user.ID!}").find("#groups").val(groups);
+ 		}
+  </script>
